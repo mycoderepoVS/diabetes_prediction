@@ -24,7 +24,7 @@ def run_eda_app():
 	# freq_df = os.path.join("data", "freqdist_of_age_data.csv")
 
 
-	df = load_data("data/diabetes_data_upload.csv")
+	df = load_data("data/diabetes_data_upload.csv")		# relative path, for github
 	df_clean = load_data("data/diabetes_data_upload_clean.csv")
 	freq_df = load_data("data/freqdist_of_age_data.csv")
 
