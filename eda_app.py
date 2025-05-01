@@ -23,9 +23,11 @@ def run_eda_app():
 	df_clean = load_data("data/diabetes_data_upload_clean.csv")
 	freq_df = load_data("data/freqdist_of_age_data.csv")
 
+	# # windows based path
+	# df = load_data("D:\\Notbackup\\diabetes_prediction\\data\\diabetes_data_upload.csv")
+	# df_clean = load_data("D:\\Notbackup\\diabetes_prediction\\data\\diabetes_data_upload_clean.csv")
+	# freq_df = load_data("D:\\Notbackup\\diabetes_prediction\\data\\freqdist_of_age_data.csv")
 
-	# windows based path, not for github and streamlit community cloud
-	#df = load_data("D:\\Notbackup\\diabetes_prediction\\data\\diabetes_data_upload.csv")
 
 	submenu = st.sidebar.selectbox("SubMenu",["Descriptive","Plots"])
 	if submenu == "Descriptive":
