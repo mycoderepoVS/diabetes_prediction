@@ -50,7 +50,7 @@ def get_value(val,my_dict):
 # Load ML Models
 @st.cache_resource
 def load_model(model_path):
-	loaded_model = joblib.load(open(model_path,"rb"))
+	loaded_model = joblib.load(model_path)
 	return loaded_model
 
 
