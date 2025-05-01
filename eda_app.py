@@ -19,19 +19,13 @@ def load_data(data):
 def run_eda_app():
 	st.subheader("EDA Section")
 
-	# df = os.path.join("data", "diabetes_data_upload.csv")
-	# df_clean = os.path.join("data", "diabetes_data_upload_clean.csv")
-	# freq_df = os.path.join("data", "freqdist_of_age_data.csv")
-
-
-	df = load_data("data/diabetes_data_upload.csv")		# relative path, for github
+	df = load_data("data/diabetes_data_upload.csv")		# correct relative path, for github
 	df_clean = load_data("data/diabetes_data_upload_clean.csv")
 	freq_df = load_data("data/freqdist_of_age_data.csv")
 
 
+	# windows based path, not for github and streamlit community cloud
 	#df = load_data("D:\\Notbackup\\diabetes_prediction\\data\\diabetes_data_upload.csv")
-	#df_clean = load_data("D:\\Notbackup\\diabetes_prediction\\data\\diabetes_data_upload_clean.csv")
-	#freq_df = load_data("D:\\Notbackup\\diabetes_prediction\\data\\freqdist_of_age_data.csv")
 
 	submenu = st.sidebar.selectbox("SubMenu",["Descriptive","Plots"])
 	if submenu == "Descriptive":

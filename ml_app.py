@@ -52,16 +52,12 @@ def get_value(val,my_dict):
 def load_model(model_path):
 	with open(model_path, "rb") as file:
 		loaded_model = joblib.load(file)
-	####loaded_model = joblib.load(model_path)
 	return loaded_model
 
 
 def run_ml_app():
 	st.subheader("Machine Learning Section")
-	#model_path = os.path.join("models", "logistic_regression_model_diabetes.pkl")
 	loaded_model = load_model("models/logistic_regression_model_diabetes.pkl")
-
-	#loaded_model = load_model("D:\\Notbackup\\diabetes_prediction\\models\\logistic_regression_model_diabetes.pkl")
 
 	with st.expander("Attributes Info"):
 		st.markdown(attrib_info,unsafe_allow_html=True)
