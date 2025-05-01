@@ -3,6 +3,13 @@ import streamlit.components.v1 as stc
 from eda_app import run_eda_app
 from ml_app import run_ml_app
 
+
+
+import os
+import joblib
+
+#### streamlit run d:/Notbackup/diabetes_prediction/app.py
+
 html_temp = """
 		<div style="background-color:#3872fb;padding:10px;border-radius:10px">
 		<h1 style="color:white;text-align:center;">Early Stage DM Risk Data App </h1>
@@ -29,6 +36,14 @@ def main():
 				- ML Section: ML Predictor App
 
 			""")
+		
+		############# for testing only ################
+	
+		# correct loaded_model = joblib.load("D:\\Notbackup\\diabetes_prediction\\models\\logistic_regression_model_diabetes.pkl")
+		
+		#loaded_model = joblib.load(open(os.path.join("models/logistic_regression_model_diabetes.pkl"),"rb"))
+
+
 	elif choice == "EDA":
 		run_eda_app()
 	elif choice == "ML":

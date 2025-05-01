@@ -49,14 +49,17 @@ def get_value(val,my_dict):
 
 # Load ML Models
 @st.cache_resource
-def load_model(model_file):
-	loaded_model = joblib.load(open(os.path.join(model_file),"rb"))
+def load_model():
+	loaded_model = joblib.load(open(os.path.join("models", "logistic_regression_model_diabetes.pkl"),"rb"))
 	return loaded_model
 
 
 def run_ml_app():
 	st.subheader("Machine Learning Section")
-	loaded_model = load_model("D:\\Notbackup\\diabetes_prediction\\models\\logistic_regression_model_diabetes.pkl")
+	#model_path = os.path.join("models", "logistic_regression_model_diabetes.pkl")
+	loaded_model = load_model()
+
+	#loaded_model = load_model("D:\\Notbackup\\diabetes_prediction\\models\\logistic_regression_model_diabetes.pkl")
 
 	with st.expander("Attributes Info"):
 		st.markdown(attrib_info,unsafe_allow_html=True)
