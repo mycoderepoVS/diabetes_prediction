@@ -17,21 +17,15 @@ def load_data(data):
 
 
 def run_eda_app():
-	st.subheader("EDA Section")
+	st.subheader("Exploratory Data Analysis Section")
 
-	df = load_data("data/diabetes_data_upload.csv")		# correct relative path, for github
-	df_clean = load_data("data/diabetes_data_upload_clean.csv")
-	freq_df = load_data("data/freqdist_of_age_data.csv")
+	df = load_data("data/diabetes_data_upload.csv")		# relative path
+	df_clean = load_data("data/diabetes_data_clean.csv")
+	freq_df = load_data("data/frequency_distribution_age.csv")
 
-	# # windows based path
-	# df = load_data("D:\\Notbackup\\diabetes_prediction\\data\\diabetes_data_upload.csv")
-	# df_clean = load_data("D:\\Notbackup\\diabetes_prediction\\data\\diabetes_data_upload_clean.csv")
-	# freq_df = load_data("D:\\Notbackup\\diabetes_prediction\\data\\freqdist_of_age_data.csv")
-
-
-	submenu = st.sidebar.selectbox("SubMenu",["Descriptive","Plots"])
-	if submenu == "Descriptive":
-		
+	submenu = st.sidebar.selectbox("SubMenu",["Descriptive Statistics","Plots"])
+	if submenu == "Descriptive Statistics":
+		st.subheader("Descriptive Statistics")
 		st.dataframe(df)
 
 		with st.expander("Data Types Summary"):
@@ -51,11 +45,7 @@ def run_eda_app():
 		# Layouts
 		col1,col2 = st.columns([2,1])
 		with col1:
-			with st.expander("Dist Plot of Gender"):
-				# fig = plt.figure()
-				# sns.countplot(df['Gender'])
-				# st.pyplot(fig)
-
+			with st.expander("Distribution Plot of Gender"):
 				gen_df = df['Gender'].value_counts().to_frame()
 				gen_df = gen_df.reset_index()
 				gen_df.columns = ['Gender Type','Counts']
@@ -63,14 +53,10 @@ def run_eda_app():
 				p01 = px.pie(gen_df,names='Gender Type',values='Counts')
 				st.plotly_chart(p01,use_container_width=True)
 
-			with st.expander("Dist Plot of Class"):
+			with st.expander("Distribution Plot of Class"):
 				fig = plt.figure()
 				sns.countplot(df['class'])
 				st.pyplot(fig)
-
-
-
-
 
 		with col2:
 			with st.expander("Gender Distribution"):
@@ -80,26 +66,11 @@ def run_eda_app():
 				st.dataframe(df['class'].value_counts())
 			
 
-		with st.expander("Frequency Dist Plot of Age"):
-			# fig,ax = plt.subplots()
-			# ax.bar(freq_df['Age'],freq_df['count'])
-			# plt.ylabel('Counts')
-			# plt.title('Frequency Count of Age')
-			# plt.xticks(rotation=45)
-			# st.pyplot(fig)
-
-			p = px.bar(freq_df,x='Age',y='count')
-			st.plotly_chart(p)
-
-			p2 = px.line(freq_df,x='Age',y='count')
-			st.plotly_chart(p2)
+		with st.expander("Frequency Distribution Plot of Age"):
+			plot = px.bar(freq_df,x='age',y='count')
+			st.plotly_chart(plot)
 
 		with st.expander("Outlier Detection Plot"):
-			# outlier_df = 
-			fig = plt.figure()
-			sns.boxplot(df['Age'])
-			st.pyplot(fig)
-
 			p3 = px.box(df,x='Age',color='Gender')
 			st.plotly_chart(p3)
 
@@ -108,6 +79,3 @@ def run_eda_app():
 			fig = plt.figure(figsize=(20,10))
 			sns.heatmap(corr_matrix,annot=True)
 			st.pyplot(fig)
-
-			p3 = px.imshow(corr_matrix)
-			st.plotly_chart(p3)

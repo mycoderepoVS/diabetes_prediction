@@ -57,14 +57,11 @@ def load_model(model_path):
 
 def run_ml_app():
 	st.subheader("Machine Learning Section")
-	# for streamlit community cloud
-	loaded_model = load_model("models/logistic_regression_model_diabetes.pkl") 
-
-	# for windows
-	#loaded_model = load_model("D:\\Notbackup\\diabetes_prediction\\models\\logistic_regression_model_diabetes.pkl")
-
+	
 	with st.expander("Attributes Info"):
 		st.markdown(attrib_info,unsafe_allow_html=True)
+	
+	model_name = st.selectbox("Select Machine Learning Model", ["Logistic Regression", "Decision Tree", "Random Forest", "Support Vector Classifier"])
 
 	# Layout
 	col1,col2 = st.columns(2)
@@ -91,7 +88,9 @@ def run_ml_app():
 		obesity = st.select_slider("obesity",["No","Yes"]) 
 
 	with st.expander("Your Selected Options"):
-		result = {'age':age,
+		result = {
+		'selected_machine_learning_model': model_name,
+		'age':age,
 		'gender':gender,
 		'polyuria':polyuria,
 		'polydipsia':polydipsia,
@@ -115,26 +114,60 @@ def run_ml_app():
 			elif i in ["Female","Male"]:
 				res = get_value(i,gender_map)
 				encoded_result.append(res)
+			elif i in ["Logistic Regression", "Decision Tree", "Random Forest", "Support Vector Classifier"]:
+				pass
 			else:
 				encoded_result.append(get_fvalue(i))
 
-
-		# st.write(encoded_result)
 	with st.expander("Prediction Results"):
 		single_sample = np.array(encoded_result).reshape(1,-1)
 
-		
+		### Model Selection
+		selected_model = result["selected_machine_learning_model"]
+
+
+		if selected_model=="Logistic Regression":
+			loaded_model = load_model("models/logistic_regression_model_grid_search_new.pkl")
+			model_markdown = '<p style="font-size:20px;">Prediction Made Using Logistic Regression Model</p>'
+			st.markdown(model_markdown,unsafe_allow_html=True)
+
+		elif selected_model=="Decision Tree":
+			loaded_model = load_model("models/decision_tree_model_depth_5.pkl")
+			model_markdown = '<p style="font-size:20px;">Prediction Made Using Decision Tree Model</p>'
+			st.markdown(model_markdown,unsafe_allow_html=True)
+
+		elif selected_model=="Random Forest":
+			loaded_model = load_model("models/random_forest_model.pkl")
+			model_markdown = '<p style="font-size:20px;">Prediction Made Using Random Forest Model</p>'
+			st.markdown(model_markdown,unsafe_allow_html=True)
+
+		elif selected_model=="Support Vector Classifier":
+			loaded_model = load_model("models/svc_model_grid_search.pkl")
+			model_markdown = '<p style="font-size:20px;">Prediction Made Using Support Vector Classifier Model</p>'
+			st.markdown(model_markdown,unsafe_allow_html=True)
+
+
+		markdown = '<p style="font-size:17px;">Predited Class Value</p>'
+		st.markdown(markdown,unsafe_allow_html=True)
+
 		prediction = loaded_model.predict(single_sample)
 		pred_prob = loaded_model.predict_proba(single_sample)
-		st.write(prediction)
-		if prediction == 1:
-			st.warning("Positive Risk-{}".format(prediction[0]))
-			pred_probability_score = {"Negative DM":pred_prob[0][0]*100,"Positive DM":pred_prob[0][1]*100}
-			st.subheader("Prediction Probability Score")
-			st.json(pred_probability_score)
-		else:
-			st.success("Negative Risk-{}".format(prediction[0]))
-			pred_probability_score = {"Negative DM":pred_prob[0][0]*100,"Positive DM":pred_prob[0][1]*100}
-			st.subheader("Prediction Probability Score")
-			st.json(pred_probability_score)
+		pred_probability_score = {"Negative Risk":pred_prob[0][0]*100,"Positive Risk":pred_prob[0][1]*100}
 
+		if(selected_model=="Support Vector Classifier"):
+			if(pred_probability_score["Negative Risk"] > pred_probability_score["Positive Risk"]):
+				prediction = np.array([0])
+				st.write(prediction)
+			else:
+				prediction=np.array([1])
+				st.write(prediction)
+		else:
+			st.write(prediction)	
+
+		if(pred_probability_score["Negative Risk"] > pred_probability_score["Positive Risk"]):
+			st.success("Negative Risk: {:.2f} %".format(pred_probability_score["Negative Risk"]))
+		else:
+			st.warning("Positive Risk: {:.2f} %".format(pred_probability_score["Positive Risk"]))
+		
+		st.subheader("Prediction Probability Score")
+		st.json(pred_probability_score)
